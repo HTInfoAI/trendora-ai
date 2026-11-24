@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b0b12">
+<title>Trendora AI — Your creative toolkit</title>
+<style>
+:root{--bg:#0b0b12;--panel:#13131e;--panel2:#191927;--border:#29293a;--text:#f5f4ff;--muted:#a4a2ba;--purple:#9b72ff;--pink:#ff68c8;--cyan:#60e5ff;--green:#6de2a4}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 10% 0%,#251447 0,transparent 32%),radial-gradient(ellipse at 90% 10%,#102e42 0,transparent 25%),var(--bg);color:var(--text);font:15px/1.5 Inter,system-ui,-apple-system,Segoe UI,sans-serif}
+button,input,textarea,select{font:inherit;color:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none}
+.app{min-height:100vh;display:grid;grid-template-columns:245px 1fr}.sidebar{border-right:1px solid var(--border);background:#0c0c14e8;padding:22px 16px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column}
+.brand{display:flex;align-items:center;gap:10px;font-weight:850;font-size:21px;margin:2px 10px 26px}.logo{width:34px;height:34px;border-radius:11px;background:linear-gradient(135deg,var(--purple),var(--pink));display:grid;place-items:center;font-weight:900;box-shadow:0 5px 22px #9b72ff44}
+.navtitle{font-size:11px;color:#74738b;font-weight:700;letter-spacing:1.4px;margin:10px 12px}.nav button{width:100%;text-align:left;background:none;border:0;color:var(--muted);padding:11px 12px;border-radius:11px;margin:2px 0;display:flex;gap:11px;align-items:center}.nav button:hover,.nav button.active{background:#211d36;color:#fff}.nav button.active{box-shadow:inset 3px 0 var(--purple)}.nav .ico{width:22px;text-align:center}
+.sidebottom{margin-top:auto;border:1px solid var(--border);background:linear-gradient(140deg,#211b36,#131521);padding:14px;border-radius:15px}.sidebottom p{color:var(--muted);font-size:12px;margin:5px 0 0}
+main{min-width:0;padding:30px clamp(18px,4vw,54px) 60px;max-width:1500px;width:100%;margin:auto}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:26px;gap:15px}.crumb{color:var(--muted);font-size:13px}.status{border:1px solid #294739;background:#10251c;color:var(--green);border-radius:30px;padding:7px 12px;font-size:12px}
+.hero{border:1px solid #39304f;border-radius:24px;padding:clamp(23px,4vw,40px);background:linear-gradient(115deg,#211634dd,#15182cdd);position:relative;overflow:hidden;margin-bottom:25px}.hero:after{content:"";position:absolute;right:-60px;top:-90px;width:320px;height:320px;background:radial-gradient(circle,#9b72ff35,transparent 65%);pointer-events:none}.hero h1{font-size:clamp(29px,4.5vw,44px);line-height:1.13;margin:10px 0}.gradient{background:linear-gradient(90deg,#b39aff,#ff8dd9,#6de5ff);-webkit-background-clip:text;background-clip:text;color:transparent}.hero p{max-width:600px;color:#c1bdd3;margin:10px 0 20px}.btn{border:0;border-radius:11px;padding:11px 16px;font-weight:700;background:linear-gradient(100deg,#9870ff,#d76dca);color:#fff}.btn.secondary{background:#222233;border:1px solid var(--border)}.eyebrow{color:#b69cff;text-transform:uppercase;letter-spacing:1.5px;font-size:11px;font-weight:800}
+.sectionhead{display:flex;align-items:center;justify-content:space-between;margin:25px 0 14px}.sectionhead h2{font-size:19px;margin:0}.sectionhead span{font-size:12px;color:var(--muted)}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.toolcard{background:linear-gradient(150deg,#171724,#12121b);border:1px solid var(--border);border-radius:17px;padding:18px;transition:.2s;cursor:pointer;min-height:145px}.toolcard:hover{transform:translateY(-3px);border-color:#67518e;box-shadow:0 12px 28px #0003}.cardicon{width:42px;height:42px;border-radius:13px;background:#29223c;display:grid;place-items:center;font-size:21px;margin-bottom:13px}.toolcard h3{font-size:15px;margin:0 0 5px}.toolcard p{font-size:12px;color:var(--muted);margin:0}
+.page{display:none}.page.show{display:block}.home.show{display:block}
+.panel{border:1px solid var(--border);background:#14141f;border-radius:18px;padding:20px;margin-bottom:16px}.panel h3{margin:0 0 12px}.label{font-size:12px;color:var(--muted);display:block;margin:12px 0 6px}input,textarea,select{width:100%;border:1px solid var(--border);background:#0f1018;border-radius:11px;padding:12px;outline:none}input:focus,textarea:focus,select:focus{border-color:var(--purple)}textarea{min-height:100px;resize:vertical}.row{display:flex;gap:10px;flex-wrap:wrap}.row>*{flex:1;min-width:140px}.result{white-space:pre-wrap;background:#0e0e17;border:1px solid var(--border);padding:15px;border-radius:12px;min-height:55px;margin-top:14px;color:#e7e4f7}.result:empty{display:none}.btnrow{display:flex;gap:9px;margin-top:12px;flex-wrap:wrap}.tiny{font-size:12px;color:var(--muted)}.chatlog{height:300px;overflow:auto;display:flex;flex-direction:column;gap:10px;margin-bottom:12px}.bubble{max-width:88%;border-radius:14px;padding:11px 13px;white-space:pre-wrap}.bubble.bot{background:#202032;align-self:flex-start}.bubble.user{background:#523a84;align-self:flex-end}
+#qrbox{display:grid;place-items:center;margin-top:15px}#qrbox canvas,#qrbox img{background:white;padding:10px;border-radius:12px;max-width:100%}
+footer{color:#77768c;text-align:center;font-size:12px;margin-top:35px}
+.mobilebar{display:none}
+@media(max-width:900px){.app{grid-template-columns:1fr}.sidebar{display:none}main{padding:18px 16px 90px}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.mobilebar{position:fixed;bottom:0;left:0;right:0;display:flex;justify-content:space-around;background:#11111beF;border-top:1px solid var(--border);padding:8px 4px env(safe-area-inset-bottom);z-index:10}.mobilebar button{border:0;background:none;color:var(--muted);font-size:11px;padding:5px}.mobilebar button.active{color:#b79aff}}
+@media(max-width:480px){.cards{grid-template-columns:1fr 1fr;gap:10px}.toolcard{padding:14px;min-height:135px}.hero{border-radius:18px}.hero h1{font-size:30px}.panel{padding:15px}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+<div class="brand"><div class="logo">T</div>Trendora <span class="gradient">AI</span></div>
+<div class="navtitle">WORKSPACE</div>
+<nav class="nav">
+<button class="active" data-page="home"><span class="ico">⌂</span>Dashboard</button>
+<button data-page="chat"><span class="ico">✦</span>AI Chat</button>
+<button data-page="writer"><span class="ico">✎</span>Content Writer</button>
+<button data-page="trends"><span class="ico">🔥</span>Trend Ideas</button>
+<button data-page="hooks"><span class="ico">🎣</span>Viral Hooks</button>
+<button data-page="hashtags"><span class="ico">#</span>Hashtag Studio</button>
+<button data-page="username"><span class="ico">✨</span>Username Lab</button>
+<button data-page="calendar"><span class="ico">🗓️</span>Content Calendar</button>
+<button data-page="translator"><span class="ico">🌐</span>Translator</button>
+</nav>
+<div class="navtitle">QUICK TOOLS</div>
+<nav class="nav">
+<button data-page="qr"><span class="ico">▦</span>QR Generator</button>
+<button data-page="texttools"><span class="ico">Aa</span>Text Tools</button>
+<button data-page="pdf"><span class="ico">▤</span>Save as PDF</button>
+</nav>
+<div class="sidebottom"><strong>✨ Free toolkit</strong><p>Browser-based tools. No account or subscription required.</p></div>
+</aside>
+<main>
+<div class="top"><div class="crumb">Workspace / <span id="crumbname">Dashboard</span></div><div class="status">● Free · No login</div></div>
+<section class="page home show" id="home">
+<div class="hero"><div class="eyebrow">Your creative space</div><h1>Ideas into <span class="gradient">something amazing.</span></h1><p>Explore creative tools, write content, generate ideas and get things done — all from one free dashboard.</p><button class="btn" onclick="showPage('writer')">Start creating ✦</button></div>
+<div class="sectionhead"><h2>Popular tools</h2><span>Pick a tool to get started</span></div>
+<div class="cards">
+<div class="toolcard" onclick="showPage('chat')"><div class="cardicon">✦</div><h3>AI Chat</h3><p>Chat with a simple built-in assistant</p></div>
+<div class="toolcard" onclick="showPage('writer')"><div class="cardicon">✎</div><h3>Content Writer</h3><p>Captions, bios, scripts & hashtags</p></div>
+<div class="toolcard" onclick="showPage('trends')"><div class="cardicon">🔥</div><h3>Trend Ideas</h3><p>Fresh topic ideas for your niche</p></div>
+<div class="toolcard" onclick="showPage('hooks')"><div class="cardicon">🎣</div><h3>Viral Hooks</h3><p>Scroll-stopping opening lines</p></div>
+<div class="toolcard" onclick="showPage('hashtags')"><div class="cardicon">#</div><h3>Hashtag Studio</h3><p>Build niche-based hashtag sets</p></div>
+<div class="toolcard" onclick="showPage('username')"><div class="cardicon">✨</div><h3>Username Lab</h3><p>Creative handle suggestions</p></div>
+<div class="toolcard" onclick="showPage('calendar')"><div class="cardicon">🗓️</div><h3>Content Calendar</h3><p>Plan a week of posts</p></div>
+<div class="toolcard" onclick="showPage('translator')"><div class="cardicon">🌐</div><h3>Translator</h3><p>Basic phrase translation helper</p></div>
+<div class="toolcard" onclick="showPage('qr')"><div class="cardicon">▦</div><h3>QR Generator</h3><p>Create a QR code from text or a link</p></div>
+<div class="toolcard" onclick="showPage('texttools')"><div class="cardicon">Aa</div><h3>Text Tools</h3><p>Count, clean, uppercase & lowercase</p></div>
+<div class="toolcard" onclick="showPage('pdf')"><div class="cardicon">▤</div><h3>Save as PDF</h3><p>Print or save text as PDF</p></div>
+</div>
+</section>
+<section class="page" id="chat"><div class="sectionhead"><h2>✦ AI-style Chat</h2><span>Offline quick assistant</span></div><div class="panel"><div class="chatlog" id="chatlog"><div class="bubble bot">Hi! I’m Trendora’s quick assistant. Ask me for caption ideas, writing help, brainstorming or basic tips. (This demo works locally and isn't connected to a live AI model.)</div></div><div class="row"><input id="chatinput" placeholder="Ask something…" onkeydown="if(event.key==='Enter')sendChat()"><button class="btn" onclick="sendChat()">Send</button></div></div></section>
+<section class="page" id="writer"><div class="sectionhead"><h2>✎ Content Writer</h2><span>Generate starter drafts</span></div><div class="panel"><label class="label">What do you want to create?</label><select id="wtype"><option value="caption">Social media caption</option><option value="bio">Profile bio</option><option value="reel">Reel/video script</option><option value="hashtags">Hashtags</option><option value="quote">Motivational quote</option></select><label class="label">Topic / niche</label><input id="wtopic" placeholder="e.g. travel, fitness, devotional, photography"><label class="label">Style</label><select id="wstyle"><option>Friendly</option><option>Professional</option><option>Funny</option><option>Motivational</option><option>Minimal</option></select><div class="btnrow"><button class="btn" onclick="writeContent()">Generate ✦</button></div><div class="result" id="writeres"></div><div class="btnrow"><button class="btn secondary" onclick="copyText('writeres')">Copy result</button></div></div></section>
+<section class="page" id="trends"><div class="sectionhead"><h2>🔥 Trend Idea Generator</h2><span>Idea prompts, not live trend data</span></div><div class="panel"><label class="label">Choose your niche</label><input id="trendtopic" placeholder="e.g. travel, food, tech, devotional"><button class="btn" style="margin-top:12px" onclick="generateTrends()">Generate ideas</button><div class="result" id="trendres"></div><div class="btnrow"><button class="btn secondary" onclick="copyText('trendres')">Copy ideas</button></div></div></section>
+
+<section class="page" id="hooks"><div class="sectionhead"><h2>🎣 Viral Hook Studio</h2><span>Opening lines for short-form content</span></div><div class="panel"><label class="label">Your topic</label><input id="hooktopic" placeholder="e.g. budget travel, skincare, gaming"><label class="label">Content format</label><select id="hookformat"><option>Reel / Short</option><option>YouTube video</option><option>Carousel post</option><option>Story</option></select><button class="btn" style="margin-top:12px" onclick="makeHooks()">Generate hooks</button><div class="result" id="hookres"></div><div class="btnrow"><button class="btn secondary" onclick="copyText('hookres')">Copy hooks</button></div></div></section>
+<section class="page" id="hashtags"><div class="sectionhead"><h2># Hashtag Studio</h2><span>Build a starter hashtag set</span></div><div class="panel"><label class="label">Niche / topic</label><input id="hashtopic" placeholder="e.g. photography, food, fitness"><label class="label">Platform</label><select id="hashplatform"><option>Instagram</option><option>YouTube</option><option>TikTok</option><option>Facebook</option></select><button class="btn" style="margin-top:12px" onclick="makeHashtags()">Create hashtag set</button><div class="result" id="hashres"></div><div class="btnrow"><button class="btn secondary" onclick="copyText('hashres')">Copy hashtags</button></div><p class="tiny">Suggestions only—not live popularity or reach rankings.</p></div></section>
+<section class="page" id="username"><div class="sectionhead"><h2>✨ Username Lab</h2><span>Generate handle ideas</span></div><div class="panel"><label class="label">Name or keyword</label><input id="userkey" placeholder="e.g. Pratham, travel, edits"><label class="label">Vibe</label><select id="uservibe"><option>Creative</option><option>Minimal</option><option>Professional</option><option>Gaming</option><option>Travel</option></select><button class="btn" style="margin-top:12px" onclick="makeUsernames()">Generate usernames</button><div class="result" id="userres"></div><div class="btnrow"><button class="btn secondary" onclick="copyText('userres')">Copy ideas</button></div><p class="tiny">Check availability on your platform before using a handle.</p></div></section>
+<section class="page" id="calendar"><div class="sectionhead"><h2>🗓️ Weekly Content Planner</h2><span>Make a simple 7-day plan</span></div><div class="panel"><label class="label">Your niche</label><input id="calniche" placeholder="e.g. travel, education, fitness"><label class="label">Main goal</label><select id="calgoal"><option>Grow an audience</option><option>Educate people</option><option>Promote a business</option><option>Share my journey</option></select><button class="btn" style="margin-top:12px" onclick="makeCalendar()">Create my week</button><div class="result" id="calres"></div><div class="btnrow"><button class="btn secondary" onclick="copyText('calres')">Copy plan</button></div></div></section>
+
+<section class="page" id="translator"><div class="sectionhead"><h2>🌐 Phrase Translator</h2><span>Basic phrase lookup</span></div><div class="panel"><label class="label">Text</label><textarea id="trtext" placeholder="Type a short phrase…"></textarea><div class="row"><div><label class="label">From</label><select id="trfrom"><option>English</option><option>Hindi</option></select></div><div><label class="label">To</label><select id="trto"><option>Hindi</option><option>English</option></select></div></div><button class="btn" style="margin-top:12px" onclick="translateText()">Translate common phrases</button><div class="result" id="trres"></div><p class="tiny">Offline phrase dictionary only. For full translation, connect a translation API (some have free tiers).</p></div></section>
+<section class="page" id="qr"><div class="sectionhead"><h2>▦ QR Code Generator</h2><span>Creates QR locally via a free library</span></div><div class="panel"><label class="label">Text or URL</label><input id="qrtext" placeholder="https://example.com or any text"><button class="btn" style="margin-top:12px" onclick="makeQR()">Generate QR</button><div id="qrbox"></div><div class="btnrow"><button class="btn secondary" onclick="downloadQR()">Download QR PNG</button></div><p class="tiny">QR library is loaded from a public CDN; internet is required for this feature.</p></div></section>
+<section class="page" id="texttools"><div class="sectionhead"><h2>Aa Text Tools</h2><span>Instant text utilities</span></div><div class="panel"><label class="label">Enter text</label><textarea id="textinput" placeholder="Paste or type text here…" oninput="countText()"></textarea><p class="tiny" id="countinfo">0 words · 0 characters</p><div class="btnrow"><button class="btn secondary" onclick="transformText('upper')">UPPERCASE</button><button class="btn secondary" onclick="transformText('lower')">lowercase</button><button class="btn secondary" onclick="transformText('title')">Title Case</button><button class="btn secondary" onclick="transformText('clean')">Clean spaces</button><button class="btn secondary" onclick="transformText('reverse')">Reverse</button><button class="btn secondary" onclick="transformText('dedupe')">Remove duplicate lines</button></div><div class="btnrow"><button class="btn" onclick="copyInput()">Copy text</button></div></div></section>
+<section class="page" id="pdf"><div class="sectionhead"><h2>▤ Save Text as PDF</h2><span>Uses your browser print dialog</span></div><div class="panel"><label class="label">Document title</label><input id="pdftitle" value="My document"><label class="label">Document text</label><textarea id="pdftext" placeholder="Write or paste content to print/save as PDF…"></textarea><button class="btn" style="margin-top:12px" onclick="savePDF()">Print / Save as PDF</button><p class="tiny">In the print dialog, choose “Save as PDF”. No file is uploaded.</p></div></section>
+<footer>Trendora AI · Free creative tools · Your text stays in this browser unless a feature uses an external service.</footer>
+</main>
+</div>
+<div class="mobilebar">
+<button data-page="home" class="active">⌂<br>Home</button><button data-page="chat">✦<br>Chat</button><button data-page="writer">✎<br>Write</button><button data-page="trends">🔥<br>Ideas</button><button data-page="texttools">Aa<br>Text</button>
+</div>
+<script>
+const pageNames={home:"Dashboard",chat:"AI Chat",writer:"Content Writer",trends:"Trend Ideas",hooks:"Viral Hooks",hashtags:"Hashtag Studio",username:"Username Lab",calendar:"Content Calendar",translator:"Translator",qr:"QR Generator",texttools:"Text Tools",pdf:"Save as PDF"};
+function showPage(p){document.querySelectorAll(".page").forEach(x=>x.classList.remove("show"));document.getElementById(p).classList.add("show");document.querySelectorAll("[data-page]").forEach(b=>b.classList.toggle("active",b.dataset.page===p));document.getElementById("crumbname").textContent=pageNames[p]||p;window.scrollTo({top:0,behavior:"smooth"});}
+document.querySelectorAll("[data-page]").forEach(b=>b.addEventListener("click",()=>showPage(b.dataset.page)));
+function copyText(id){const t=document.getElementById(id).innerText;if(!t)return; navigator.clipboard?.writeText(t).then(()=>alert("Copied!")).catch(()=>alert("Copy not available—select text manually."))}
+function writeContent(){let topic=(document.getElementById("wtopic").value||"your topic").trim(),style=document.getElementById("wstyle").value,type=document.getElementById("wtype").value;let out;
+if(type==="caption")out=`${topic} — ${style==="Funny"?"Making memories and collecting moments 😄":style==="Motivational"?"Small steps. Big dreams. Keep going ✨":style==="Professional"?"Sharing insights and inspiration around "+topic+".":"A little inspiration for your day ✨"}\n\nWhat’s your take? Share below 👇`;
+else if(type==="bio")out=`✨ ${topic} enthusiast\n📍 Creating • Exploring • Growing\n💫 ${style==="Professional"?"Sharing ideas & inspiration":"Finding joy in the little things"}\n👇 Follow along`;
+else if(type==="reel")out=`REEL IDEA: ${topic}\n\nHOOK (0–3s): “Wait—have you tried this?”\nSCENE 1: Show the topic / setup.\nSCENE 2: Share one useful, surprising or beautiful detail.\nSCENE 3: Quick close-up or reveal.\nENDING: “Save this & share it with a friend!”\n\nStyle: ${style}`;
+else if(type==="hashtags")out=`#${topic.replace(/\s+/g,"")} #${topic.replace(/\s+/g,"")}Ideas #Explore #Reels #Inspiration #Trending #ContentCreator #Creative #Daily`;
+else out=style==="Motivational"?`“Your journey with ${topic} doesn't need to be perfect—just keep moving forward.”`: `“Make room for ${topic}, good things grow when you give them attention.”`;
+document.getElementById("writeres").textContent=out}
+const ideaTemplates=["Create a 3-step beginner guide to {n}.","Share one surprising fact about {n}.","Before vs after: your progress with {n}.","A common mistake people make with {n}—and how to fix it.","Myth vs truth about {n}.","A quick checklist for anyone starting {n}.","Storytime: the moment I learned something about {n}.","Top 5 things I wish I knew about {n}.","A 15-second tip that makes {n} easier.","Ask your audience: what is their biggest question about {n}?"];
+function generateTrends(){let n=(document.getElementById("trendtopic").value||"everyday life").trim();document.getElementById("trendres").textContent=ideaTemplates.sort(()=>Math.random()-.5).slice(0,7).map((x,i)=>(i+1)+". "+x.replaceAll("{n}",n)).join("\n\n")}
+function countText(){let t=document.getElementById("textinput").value;let words=t.trim()?t.trim().split(/\s+/).length:0;document.getElementById("countinfo").textContent=`${words} words · ${t.length} characters · ${t.split(/\n/).length} lines`}
+function transformText(k){let el=document.getElementById("textinput"),t=el.value;if(k==="upper")t=t.toUpperCase();if(k==="lower")t=t.toLowerCase();if(k==="title")t=t.toLowerCase().replace(/\b\w/g,c=>c.toUpperCase());if(k==="clean")t=t.split("\n").map(s=>s.trim().replace(/\s+/g," ")).filter(Boolean).join("\n");if(k==="reverse")t=[...t].reverse().join("");if(k==="dedupe")t=[...new Set(t.split("\n"))].join("\n");el.value=t;countText()}
+function copyInput(){navigator.clipboard?.writeText(document.getElementById("textinput").value).then(()=>alert("Copied text!")).catch(()=>alert("Select and copy text manually."))}
+const dictionary={"hello":"नमस्ते","hi":"नमस्ते","thank you":"धन्यवाद","how are you":"आप कैसे हैं?","good morning":"सुप्रभात","good night":"शुभ रात्रि","please":"कृपया","sorry":"माफ़ कीजिए","welcome":"स्वागत है","i love you":"मैं तुमसे प्यार करता/करती हूँ","नमस्ते":"Hello","धन्यवाद":"Thank you","आप कैसे हैं?":"How are you?","सुप्रभात":"Good morning","शुभ रात्रि":"Good night","कृपया":"Please","माफ़ कीजिए":"Sorry","स्वागत है":"Welcome"};
+function translateText(){let text=document.getElementById("trtext").value.trim(),from=document.getElementById("trfrom").value,to=document.getElementById("trto").value;if(!text){document.getElementById("trres").textContent="Enter text first.";return}if(from===to){document.getElementById("trres").textContent=text;return}let out=dictionary[text.toLowerCase()]||dictionary[text]||"Phrase not found in the built-in dictionary. For a complete translation, use an online translation service.";document.getElementById("trres").textContent=out}
+function sendChat(){let inp=document.getElementById("chatinput"),v=inp.value.trim();if(!v)return;let log=document.getElementById("chatlog");log.insertAdjacentHTML("beforeend",`<div class="bubble user"></div>`);log.lastChild.textContent=v;inp.value="";let answer;if(/caption|instagram|reel|post/i.test(v))answer="Try this: “A little progress every day adds up to something amazing ✨”\nWant a more specific caption? Use Content Writer and enter your topic.";else if(/translate|hindi|english/i.test(v))answer="For a few common phrases, try the Translator tool. It uses a small offline phrase dictionary.";else if(/idea|content|video|trend/i.test(v))answer="Open Trend Ideas, enter your niche, and generate a set of content prompts. These are idea prompts, not live trend rankings.";else if(/hello|hi|namaste/i.test(v))answer="Hello! 👋 Tell me what you'd like to create. I can offer basic writing ideas and direct you to a tool.";else answer="I can help with basic ideas and writing templates. Try Content Writer, Trend Ideas or Text Tools. This chat is a local demo—not a live AI model.";let b=document.createElement("div");b.className="bubble bot";b.textContent=answer;log.appendChild(b);log.scrollTop=log.scrollHeight}
+function makeQR(){let t=document.getElementById("qrtext").value.trim(),box=document.getElementById("qrbox");box.innerHTML="";if(!t){box.textContent="Enter a text or URL first.";return}if(!window.QRCode){box.textContent="QR library loading failed. Check your internet connection and reload.";return}new QRCode(box,{text:t,width:220,height:220,colorDark:"#111111",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.H})}
+function downloadQR(){let box=document.querySelector("#qrbox canvas");if(!box){alert("Generate a QR code first.");return}let a=document.createElement("a");a.href=box.toDataURL("image/png");a.download="trendora-qr.png";a.click()}
+
+function makeHooks(){
+ const t=(document.getElementById("hooktopic").value||"this topic").trim();
+ const f=document.getElementById("hookformat").value;
+ const patterns=[
+  `Stop scrolling if you want to get better at ${t}.`,
+  `I wish I knew this about ${t} sooner…`,
+  `3 things nobody tells beginners about ${t}.`,
+  `The biggest mistake people make with ${t} is this.`,
+  `Can you spot what's wrong with this ${t} tip?`,
+  `Try this simple ${t} idea today.`,
+  `Before you spend time on ${t}, watch this.`,
+  `Here's a beginner-friendly way to understand ${t}.`,
+  `Myth or fact: what people get wrong about ${t}.`,
+  `Save this checklist for your next ${t} session.`
+ ];
+ document.getElementById("hookres").textContent=`${f} hook ideas\n\n`+patterns.map((x,i)=>`${i+1}. ${x}`).join("\n");
+}
+function makeHashtags(){
+ let raw=(document.getElementById("hashtopic").value||"creator").trim();
+ let key=raw.toLowerCase().replace(/[^a-z0-9]/g,"");
+ let platform=document.getElementById("hashplatform").value;
+ let tags=[key,key+"tips",key+"ideas","creatorcommunity","contentcreator","dailyinspiration","exploremore","creativecommunity","learnsomethingnew","newpost","community","yourdailyinspo"];
+ document.getElementById("hashres").textContent=`${platform} hashtag starter set\n\n`+[...new Set(tags)].map(x=>"#"+x).join(" ");
+}
+function makeUsernames(){
+ let k=(document.getElementById("userkey").value||"creator").trim().toLowerCase().replace(/[^a-z0-9]/g,"");
+ let vibe=document.getElementById("uservibe").value.toLowerCase();
+ let prefixes={creative:["the","hey","its","createwith"],minimal:["by","just","real","iam"],professional:["official","connect","the","pro"],gaming:["play","gg","pixel","levelup"],travel:["roam","wander","journey","tripwith"]}[vibe]||["the","hey"];
+ let suffix=["studio","diaries","daily","hub","world","verse","works","zone","stories","space"];
+ let list=[...prefixes.map(x=>x+k),...suffix.slice(0,6).map(x=>k+x),k+"_official", "the_"+k, k+".creates"];
+ document.getElementById("userres").textContent=[...new Set(list)].map((x,i)=>`${i+1}. @${x}`).join("\n");
+}
+function makeCalendar(){
+ let n=(document.getElementById("calniche").value||"your niche").trim();
+ let goal=document.getElementById("calgoal").value;
+ let days=[
+ ["Monday","Quick tip","Teach one useful thing about "+n+"."],
+ ["Tuesday","Behind the scenes","Show your process, setup or routine."],
+ ["Wednesday","Myth vs fact","Clear up one misconception about "+n+"."],
+ ["Thursday","Storytime","Share a personal lesson or experience."],
+ ["Friday","List post","Share 5 tools, ideas or tips related to "+n+"."],
+ ["Saturday","Community question","Ask followers what they want to learn next."],
+ ["Sunday","Weekly recap","Summarize the week's best insight and invite saves."]
+ ];
+ document.getElementById("calres").textContent=`7-day plan · Goal: ${goal}\n\n`+days.map(d=>`${d[0]} — ${d[1]}\n${d[2]}`).join("\n\n");
+}
+
+function savePDF(){let title=document.getElementById("pdftitle").value||"Document",text=document.getElementById("pdftext").value;let w=window.open("","_blank");if(!w){alert("Allow pop-ups to print/save PDF.");return}w.document.write("<!doctype html><html><head><title>"+title.replace(/[<>]/g,"")+"</title><style>body{font-family:Arial,sans-serif;padding:40px;white-space:pre-wrap;line-height:1.65}h1{font-size:22px}</style></head><body><h1>"+title.replace(/[<>]/g,"")+"</h1><div>"+text.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]))+"</div></body></html>");w.document.close();w.focus();setTimeout(()=>w.print(),400)}
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</body></html>
