@@ -81,6 +81,207 @@ footer{color:#77768c;text-align:center;font-size:12px;margin-top:35px}
 <section class="page" id="qr"><div class="sectionhead"><h2>▦ QR Code Generator</h2><span>Creates QR locally via a free library</span></div><div class="panel"><label class="label">Text or URL</label><input id="qrtext" placeholder="https://example.com or any text"><button class="btn" style="margin-top:12px" onclick="makeQR()">Generate QR</button><div id="qrbox"></div><div class="btnrow"><button class="btn secondary" onclick="downloadQR()">Download QR PNG</button></div><p class="tiny">QR library is loaded from a public CDN; internet is required for this feature.</p></div></section>
 <section class="page" id="texttools"><div class="sectionhead"><h2>Aa Text Tools</h2><span>Instant text utilities</span></div><div class="panel"><label class="label">Enter text</label><textarea id="textinput" placeholder="Paste or type text here…" oninput="countText()"></textarea><p class="tiny" id="countinfo">0 words · 0 characters</p><div class="btnrow"><button class="btn secondary" onclick="transformText('upper')">UPPERCASE</button><button class="btn secondary" onclick="transformText('lower')">lowercase</button><button class="btn secondary" onclick="transformText('title')">Title Case</button><button class="btn secondary" onclick="transformText('clean')">Clean spaces</button><button class="btn secondary" onclick="transformText('reverse')">Reverse</button><button class="btn secondary" onclick="transformText('dedupe')">Remove duplicate lines</button></div><div class="btnrow"><button class="btn" onclick="copyInput()">Copy text</button></div></div></section>
 <section class="page" id="pdf"><div class="sectionhead"><h2>▤ Save Text as PDF</h2><span>Uses your browser print dialog</span></div><div class="panel"><label class="label">Document title</label><input id="pdftitle" value="My document"><label class="label">Document text</label><textarea id="pdftext" placeholder="Write or paste content to print/save as PDF…"></textarea><button class="btn" style="margin-top:12px" onclick="savePDF()">Print / Save as PDF</button><p class="tiny">In the print dialog, choose “Save as PDF”. No file is uploaded.</p></div></section>
+ 
+<section class="panel" id="free-video-maker">
+  <h2>🎬 Script to Video Maker</h2>
+  <p class="tiny">Free animated video creator — no API key required.</p>
+
+  <label class="label">Paste your script (each line = one scene)</label>
+  <textarea id="iv-script" placeholder="Welcome to my video!
+Today I will share three tips.
+Follow for more!"></textarea>
+
+  <label class="label">Video format</label>
+  <select id="iv-format">
+    <option value="vertical">Vertical 9:16 — Reels / Shorts</option>
+    <option value="square">Square 1:1</option>
+    <option value="wide">Landscape 16:9 — YouTube</option>
+  </select>
+
+  <label class="label">Background theme</label>
+  <select id="iv-theme">
+    <option value="purple">Purple</option>
+    <option value="blue">Ocean Blue</option>
+    <option value="sunset">Sunset</option>
+    <option value="dark">Dark</option>
+  </select>
+
+  <label class="label">Seconds per scene</label>
+  <select id="iv-speed">
+    <option value="3">3 seconds</option>
+    <option value="4" selected>4 seconds</option>
+    <option value="5">5 seconds</option>
+  </select>
+
+  <button class="btn" onclick="ivPreview()">Preview Video</button>
+  <button class="btn secondary" onclick="ivDownload()">Create & Download Video</button>
+
+  <p class="tiny" id="iv-status">Paste your script to begin. Maximum 12 scenes.</p>
+  <canvas id="iv-canvas" width="720" height="1280"
+    style="width:100%;max-width:320px;display:block;margin:15px auto;border-radius:12px;background:#111">
+  </canvas>
+</section>
+
+<script>
+const ivThemes = {
+  purple:["#170d32","#8b4dcb"],
+  blue:["#071f35","#087e9b"],
+  sunset:["#431b39","#e16a55"],
+  dark:["#090b12","#343b50"]
+};
+
+let ivScenes=[],ivDuration=4000,ivFrame=null;
+
+function ivSetup(){
+  const format=document.getElementById("iv-format").value;
+  const c=document.getElementById("iv-canvas");
+  if(format==="square"){c.width=1080;c.height=1080;}
+  else if(format==="wide"){c.width=1280;c.height=720;}
+  else {c.width=720;c.height=1280;}
+}
+
+function ivDraw(index,progress){
+  const c=document.getElementById("iv-canvas");
+  const x=c.getContext("2d"),w=c.width,h=c.height;
+  const colors=ivThemes[document.getElementById("iv-theme").value];
+  const g=x.createLinearGradient(0,0,w,h);
+  g.addColorStop(0,colors[0]);
+  g.addColorStop(1,colors[1]);
+  x.fillStyle=g;
+  x.fillRect(0,0,w,h);
+
+  x.textAlign="center";
+  x.fillStyle="white";
+  x.font="bold "+Math.round(w*.075)+"px system-ui";
+
+  const words=ivScenes[index].split(/\s+/);
+  let lines=[],line="";
+  for(const word of words){
+    const test=line?line+" "+word:word;
+    if(x.measureText(test).width>w*.78 && line){
+      lines.push(line);line=word;
+    }else line=test;
+  }
+  if(line)lines.push(line);
+
+  lines=lines.slice(0,7);
+  const gap=w*.09;
+  const start=h/2-(lines.length-1)*gap/2;
+
+  lines.forEach((v,i)=>x.fillText(v,w/2,start+i*gap));
+
+  x.font="600 "+Math.round(w*.027)+"px system-ui";
+  x.fillStyle="#ffffffcc";
+  x.fillText("SCENE "+(index+1)+" / "+ivScenes.length,w/2,h*.86);
+
+  x.fillStyle="#ffffff44";
+  x.fillRect(w*.12,h*.92,w*.76,8);
+  x.fillStyle="#ffffff";
+  x.fillRect(w*.12,h*.92,w*.76*progress,8);
+
+  x.font="600 "+Math.round(w*.024)+"px system-ui";
+  x.fillText("Made with Info AI",w/2,h*.96);
+}
+
+function ivPreview(){
+  ivScenes=document.getElementById("iv-script").value
+    .split(/\n+/).map(v=>v.trim()).filter(Boolean).slice(0,12);
+
+  if(!ivScenes.length){
+    document.getElementById("iv-status").textContent="Please enter your script.";
+    return;
+  }
+
+  ivSetup();
+  cancelAnimationFrame(ivFrame);
+  ivDuration=Number(document.getElementById("iv-speed").value)*1000;
+  const start=performance.now();
+
+  function draw(now){
+    const elapsed=now-start;
+    if(elapsed>=ivScenes.length*ivDuration){
+      ivDraw(ivScenes.length-1,1);
+      document.getElementById("iv-status").textContent="Preview complete.";
+      return;
+    }
+    const i=Math.floor(elapsed/ivDuration);
+    ivDraw(i,(elapsed%ivDuration)/ivDuration);
+    ivFrame=requestAnimationFrame(draw);
+  }
+
+  ivFrame=requestAnimationFrame(draw);
+  document.getElementById("iv-status").textContent="Preview playing...";
+}
+
+function ivDownload(){
+  ivScenes=document.getElementById("iv-script").value
+    .split(/\n+/).map(v=>v.trim()).filter(Boolean).slice(0,12);
+
+  const status=document.getElementById("iv-status");
+  const c=document.getElementById("iv-canvas");
+
+  if(!ivScenes.length){status.textContent="Enter your script first.";return;}
+  if(!window.MediaRecorder || !c.captureStream){
+    status.textContent="Video recording not supported. Try Chrome.";
+    return;
+  }
+
+  ivSetup();
+  cancelAnimationFrame(ivFrame);
+  ivDuration=Number(document.getElementById("iv-speed").value)*1000;
+
+  const stream=c.captureStream(25);
+  const chunks=[];
+  const types=["video/webm;codecs=vp9","video/webm;codecs=vp8","video/webm"];
+  const mime=types.find(t=>MediaRecorder.isTypeSupported(t))||"";
+
+  let recorder;
+  try{
+    recorder=new MediaRecorder(stream,mime?{mimeType:mime}:{});
+  }catch(e){
+    stream.getTracks().forEach(t=>t.stop());
+    status.textContent="Could not create video in this browser.";
+    return;
+  }
+
+  const start=performance.now();
+  const total=ivScenes.length*ivDuration;
+
+  recorder.ondataavailable=e=>{
+    if(e.data.size)chunks.push(e.data);
+  };
+
+  recorder.onstop=()=>{
+    stream.getTracks().forEach(t=>t.stop());
+    const blob=new Blob(chunks,{type:recorder.mimeType||"video/webm"});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement("a");
+    a.href=url;
+    a.download="info-ai-video.webm";
+    a.click();
+    setTimeout(()=>URL.revokeObjectURL(url),60000);
+    status.textContent="Video downloaded successfully!";
+  };
+
+  recorder.start(250);
+  status.textContent="Creating video... Keep this page open.";
+
+  function frame(now){
+    const elapsed=now-start;
+    if(elapsed>=total){
+      ivDraw(ivScenes.length-1,1);
+      recorder.stop();
+      return;
+    }
+    const i=Math.floor(elapsed/ivDuration);
+    ivDraw(i,(elapsed%ivDuration)/ivDuration);
+    requestAnimationFrame(frame);
+  }
+
+  requestAnimationFrame(frame);
+}
+</script>
+ 
 <footer>Info AI · Free creative tools · Your text stays in this browser unless a feature uses an external service.</footer>
 </main>
 </div>
